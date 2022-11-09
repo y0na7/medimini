@@ -1,0 +1,97 @@
+@page "/Vis"
+
+@using ordinationsapp.Data;
+@using shared.Model;
+@using ordinationsapp.Shared
+@using ordinationsapp.Model;
+@inject ApiService apiService
+
+<div class="container">
+    <h1>Vis ordinationer</h1>
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-4 border p-3">
+            <h3>Vælg patient</h3>
+            <PatientList onSelectPatient="@onSelectPatient" patienter="@patienter"></PatientList>
+        </div>
+        <div class="col-md-4 border p-3">
+            <h3>Vælg ordination</h3>
+            <OrdinationList onSelectOrdination="@onSelectOrdination" ordinationer="@ordinationer"></OrdinationList>
+        </div>
+        <div class="col-md-4 border p-3">
+            @if (ordination != null && ordination.getType().Equals("PN")) {
+                var input = (PN) ordination;
+                <PNDetails pn=input></PNDetails>
+            } else if (ordination != null && ordination.getType().Equals("DagligSkæv")) {
+                var input = (DagligSkæv) ordination;
+                <SkævDetails skæv=input></SkævDetails>
+            } else if (ordination != null && ordination.getType().Equals("DagligFast")) {
+                var input = (DagligFast) ordination;
+                <FastDetails fast=input></FastDetails>
+            } 
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private PatientResponse? patient;
+    public Ordination? ordination;
+    public List<Ordination> ordinationer = new List<Ordination>();
+    private PatientResponse[]? patienter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        apiService.RefreshRequired += this.RefreshMe;
+        patienter = await apiService.GetPatienter();
+        await UpdateList();
+    }
+
+    private async Task UpdateList() {
+        if (patient == null) return;
+        Console.WriteLine("Updating list");
+        
+        OrdinationResponse? res = await apiService.GetOrdinationer();
+        if (res == null) return;
+        
+        List<Ordination> pns = res.pn.ToList().Where(o => patient.ordinationer.Any(po => po == o.OrdinationId))
+            .Cast<Ordination>().ToList();
+        List<Ordination> dagligSkaev = res.dagligSkaev.ToList().Where(o => patient.ordinationer.Any(po => po == o.OrdinationId))
+            .Cast<Ordination>().ToList();
+        List<Ordination> dagligFast = res.dagligFast.ToList().Where(o => patient.ordinationer.Any(po => po == o.OrdinationId))
+            .Cast<Ordination>().ToList();
+
+        ordinationer.Clear();
+        ordinationer.AddRange(pns);
+        ordinationer.AddRange(dagligSkaev);
+        ordinationer.AddRange(dagligFast);
+
+        if (ordination != null) {
+            ordination = ordinationer.Find(o => o.OrdinationId == ordination.OrdinationId);  
+        }
+
+        StateHasChanged();
+    }
+    
+    private async void RefreshMe()
+    {
+        await UpdateList();
+        Console.WriteLine("Refreshed VisOrdinationer");
+        StateHasChanged();
+    }
+
+    private async void onSelectPatient(PatientResponse p) {
+        this.patient = p;
+        await UpdateList();
+        Console.WriteLine("Selected " + p);
+        StateHasChanged();
+    }
+    private async void onSelectOrdination(Ordination o) {
+        this.ordination = o;
+        await UpdateList();
+        Console.WriteLine("Selected " + o);
+        StateHasChanged();
+    }
+}

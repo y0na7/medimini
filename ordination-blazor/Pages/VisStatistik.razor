@@ -1,0 +1,59 @@
+@page "/Statistik"
+
+@using ordinationsapp.Data;
+@using shared.Model;
+@using ordinationsapp.Shared
+@using ordinationsapp.Model;
+@inject ApiService apiService
+
+<div class="container">
+    <h1>Vis statistik</h1>
+
+    <strong>Ikke implementeret 😢</strong>
+    <br />
+
+    <div class="row">
+        <div class="col-md-12 border p-3">
+            <h3>Antal ordinationer</h3>
+
+            <div class="form-group row">
+                <label for="vægtfra" class="col-sm-4 col-form-label">Vægt fra</label>
+                <div class="col-sm-8">
+                <input type="number" class="form-control" id="vægtfra">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="vægttil" class="col-sm-4 col-form-label">Vægt til</label>
+                <div class="col-sm-8">
+                <input type="number" class="form-control" id="vægttil">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="lm" class="col-sm-4 col-form-label">Lægemiddel</label>
+                <div class="col-sm-8">
+                <input type="text" class="form-control" id="lm">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 border p-3">
+            <h3>Resultat</h3>
+
+            <div class="form-group row">
+                <label for="antal" class="col-sm-4 col-form-label">Antal</label>
+                <div class="col-sm-8">
+                <input readonly type="number" class="form-control" id="antal">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@code {
+    public Ordination? ordination;
+    public List<Ordination> ordinationer = new List<Ordination>();
+}

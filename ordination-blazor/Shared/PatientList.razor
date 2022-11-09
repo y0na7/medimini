@@ -1,0 +1,47 @@
+﻿@namespace ordinationsapp.Shared
+
+@page "/patients"
+
+@inherits LayoutComponentBase
+
+@using ordinationsapp.Data;
+@using ordinationsapp.Model;
+@using shared.Model;
+@inject ApiService apiService
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@if (patienter == null)
+{
+    <p><em>Loader patienter...</em></p>
+}
+else
+{
+    <table>
+        @foreach (var p in patienter)
+        {
+            <tr>
+                @if(p.Equals(selected)) {
+                    <td class="selected" @onclick="() => ClickPatient(p)">@p.navn</td>
+                } else {
+                    <td @onclick="() => ClickPatient(p)">@p.navn</td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Action<PatientResponse>? onSelectPatient { get; set; }
+    [Parameter]
+    public PatientResponse[]? patienter { get; set; }
+    private PatientResponse? selected;
+
+    private void ClickPatient(PatientResponse p) 
+    {
+        this.selected = p;
+        onSelectPatient?.Invoke(p);
+    }
+}

@@ -1,0 +1,48 @@
+﻿@namespace ordinationsapp.Shared
+
+@inherits LayoutComponentBase
+
+@using ordinationsapp.Data;
+@using shared.Model;
+@inject ApiService apiService
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@if (lægemidler == null)
+{
+    <p><em>Loader lægemidler...</em></p>
+}
+else
+{
+    <table>
+        @foreach (var l in lægemidler)
+        {
+            <tr>
+                @if(l.Equals(selected)) {
+                    <td class="selected" @onclick="() => ClickLægemiddel(l)">@l.ToString()</td>
+                } else {
+                    <td @onclick="() => ClickLægemiddel(l)">@l.ToString()</td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Action<Laegemiddel>? onSelectLægemiddel { get; set; }
+    private Laegemiddel[]? lægemidler;
+    private Laegemiddel? selected;
+
+    protected override async Task OnInitializedAsync()
+    {
+        lægemidler = await apiService.GetLaegemidler();
+    }
+
+    private void ClickLægemiddel(Laegemiddel l) 
+    {
+        this.selected = l;
+        onSelectLægemiddel?.Invoke(l);
+    }
+}

@@ -1,0 +1,39 @@
+﻿@namespace ordinationsapp.Shared
+
+@inherits LayoutComponentBase
+
+@using ordinationsapp.Data;
+@using shared.Model;
+
+@if (skæv == null)
+{
+    <p><em>Loader Daglig Skæv ordination...</em></p>
+}
+else
+{
+    <h3>Ordinationsdetaljer</h3>
+    <p>Type: Daglig Skæv</p>
+    <p>Startdato: @skæv.startDen</p>
+    <p>Slutdato: @skæv.slutDen</p>
+    <p>Lægemiddel: @skæv.laegemiddel</p>
+    <p>Døgndosis: @skæv.doegnDosis()</p>
+    <p>Samlet dosis: @skæv.samletDosis()</p>
+    <pre>
+        @DoserText()
+    </pre>
+}
+
+@code {
+    [Parameter]
+    public DagligSkæv? skæv { get; set; }
+
+    private string DoserText() {
+        if (skæv == null) return "";
+
+        string doser = "";
+        foreach (Dosis dosis in skæv.doser) {
+            doser += dosis.ToString() + "\n";
+        }
+        return doser;
+    }
+}

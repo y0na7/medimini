@@ -1,0 +1,28 @@
+﻿@namespace ordinationsapp.Shared
+
+@inherits LayoutComponentBase
+
+@using ordinationsapp.Data;
+@using shared.Model;
+
+@if (fast == null)
+{
+    <p><em>Loader Daglig Skæv ordination...</em></p>
+}
+else
+{
+    <h3>Ordinationsdetaljer</h3>
+    <p>Type: Daglig Fast</p>
+    <p>Startdato: @fast.startDen</p>
+    <p>Slutdato: @fast.slutDen</p>
+    <p>Lægemiddel: @fast.laegemiddel</p>
+    <p>MorgenDosis: @fast.MorgenDosis</p>
+    <p>MiddagDosis: @fast.MiddagDosis</p>
+    <p>AftenDosis: @fast.AftenDosis</p>
+    <p>NatDosis: @fast.NatDosis</p>
+}
+
+@code {
+    [Parameter]
+    public DagligFast? fast { get; set; }
+}

@@ -1,0 +1,48 @@
+﻿@namespace ordinationsapp.Shared
+
+@inherits LayoutComponentBase
+
+@using ordinationsapp.Data;
+@using shared.Model;
+
+@inject ApiService apiService
+
+@if (pn == null)
+{
+    <p><em>Loader PN ordination...</em></p>
+}
+else
+{
+    <h3>Ordinationsdetaljer</h3>
+    <p>Type: PN</p>
+    <p>Startdato: @pn.startDen</p>
+    <p>Slutdato: @pn.slutDen</p>
+    <p>Lægemiddel: @pn.laegemiddel</p>
+    <p>Døgndosis: @pn.doegnDosis()</p>
+    <p>Samlet dosis: @pn.samletDosis()</p>
+    <p>Dosis: @pn.antalEnheder</p>
+    <p>Givet: @pn.getAntalGangeGivet()</p>
+    <div>
+        <input @bind="Dato" type="date" name="giv-dato">
+        <Button class="btn btn-danger" @onclick="GivDosisPN">Anvend ordination</Button>
+    </div>
+    <p>@msg</p>
+}
+
+@code {
+    [Parameter]
+    public PN? pn { get; set; }
+    public DateTime Dato { get; set; } = DateTime.Now;
+    private string msg { get; set; } = "";
+
+    private async void GivDosisPN()
+    {
+        if (pn == null)
+        {
+            msg = "Dato mangler.";
+            return;
+        }
+        string result = await apiService.GivDosisPN(pn, Dato);
+        this.msg = result;
+    }
+}

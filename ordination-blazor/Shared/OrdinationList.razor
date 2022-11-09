@@ -1,0 +1,43 @@
+﻿@namespace ordinationsapp.Shared
+
+@page "/ordinationer"
+
+@inherits LayoutComponentBase
+
+@using ordinationsapp.Data;
+@using shared.Model;
+@inject ApiService apiService
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@if (ordinationer == null)
+{
+    <p><em>Loader ordinationer...</em></p>
+}
+else
+{
+    <table>
+        @foreach (var o in ordinationer)
+        {
+            <tr>
+                <td class=@(selected?.OrdinationId == o.OrdinationId ? "selected" : "") 
+                    @onclick="() => ClickOrdination(o)">@o.ToString()</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    [Parameter]
+    public Action<Ordination>? onSelectOrdination { get; set; }
+    [Parameter]
+    public List<Ordination> ordinationer { get; set; } = new List<Ordination>();
+    private Ordination? selected;
+
+    private void ClickOrdination(Ordination o) 
+    {
+        this.selected = o;
+        onSelectOrdination?.Invoke(o);
+    }
+}
