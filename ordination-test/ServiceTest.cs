@@ -1,10 +1,11 @@
 namespace ordination_test;
 
 using Microsoft.EntityFrameworkCore;
-using shared.Model;
+
 using Service;
 using Data;
 
+[TestClass]
 public class ServiceTest
 {
     private readonly DataService service;
@@ -18,9 +19,9 @@ public class ServiceTest
         service.SeedData();
     }
 
-    [Fact]
+    [TestMethod]
     public void PatientsExist()
     {
-        Assert.NotNull(service.GetPatienter());
+        Assert.IsNotNull(service.GetPatienter());
     }
 }

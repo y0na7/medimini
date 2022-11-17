@@ -2,9 +2,11 @@ namespace ordination_test;
 
 using shared.Model;
 
+[TestClass]
 public class PatientTest
 {
-    [Fact]
+
+    [TestMethod]
     public void PatientHasName()
     {
         string cpr = "160563-1234";
@@ -12,10 +14,11 @@ public class PatientTest
         double vægt = 83;
         
         Patient patient = new Patient(cpr, navn, vægt);
-        Assert.Equal(navn, patient.navn);
+        Assert.AreEqual(navn, patient.navn);
     }
 
-    [Fact]
+
+    [TestMethod]
     public void TestDerAltidFejler()
     {
         string cpr = "160563-1234";
@@ -23,6 +26,6 @@ public class PatientTest
         double vægt = 83;
 
         Patient patient = new Patient(cpr, navn, vægt);
-        Assert.Equal("Egon", patient.navn);
+        Assert.AreEqual("Egon", patient.navn);
     }
 }
