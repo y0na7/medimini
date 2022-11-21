@@ -17,10 +17,9 @@ public abstract class Ordination {
         this.laegemiddel = null!;
     }
 
-    /**
-     * Antal hele dage mellem startdato og slutdato. Begge dage inklusive.
-     * @return antal dage ordinationen gælder for
-     */
+    /// <summary>
+    /// Antal hele dage mellem startdato og slutdato. Begge dage inklusive.
+    /// </summary>
     public int antalDage() {
         // TODO: Implement!
         return -1;
@@ -30,21 +29,18 @@ public abstract class Ordination {
         return startDen.ToString();
     }
 
-    /**
-     * Returnerer den totale dosis der er givet i den periode ordinationen er gyldig
-     * @return
-     */
+    /// <summary>
+    /// Returnerer den totale dosis der er givet i den periode ordinationen er gyldig
+    /// </summary>
     public abstract double samletDosis();
 
-    /**
-     * Returnerer den gennemsnitlige dosis givet pr dag i den periode ordinationen er gyldig
-     * @return
-     */
+    /// <summary>
+    /// Returnerer den gennemsnitlige dosis givet pr dag i den periode ordinationen er gyldig
+    /// </summary>
     public abstract double doegnDosis();
 
-    /**
-     * Returnerer ordinationstypen som en String
-     * @return
-     */
-    public abstract String getType(); // TODO: Omdøb? Minder for meget om den indbyggede i C#.
+    /// <summary>
+    /// Returnerer ordinationstypen som en String
+    /// </summary>
+    public abstract String getType();
 }
