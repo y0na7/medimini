@@ -6,7 +6,7 @@ Der ligger en dotnet solution-fil som kan åbnes i Visual Studio. Disse projekte
 - **ordination-api**: En ASP.NET web api der implementere funktionaliteten til at ordinere medicin og hente / gemme data i databasen.
 - **ordination-blazor**: En .NET Blazor frontend der benytter sig af "ordination-api".
 - **shared**: Fælles C# model-klasser for de to .NET-projekter.
-- **ordination-test**: Projekt der demonstrerer hvordan man kan teste med xUnit. 
+- **ordination-test**: Projekt der demonstrerer hvordan man kan teste med MStest. 
 
 ## Afprøv projektet fra Visual Studio 2022
 Der er to måder at testet projektet på lokalt på sin egen computer.
