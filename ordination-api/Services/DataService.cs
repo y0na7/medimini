@@ -161,8 +161,18 @@ public class DataService
     }
 
     public string AnvendOrdination(int id, Dato dato) {
-        // TODO: Implement!
-        return null!;
+        Ordination ordination = db.Ordinationer.Find(id)!;
+        string besked = "";
+        if (dato.dato > ordination.startDen && dato.dato < ordination.slutDen) 
+        {
+            besked = "Ordination er givet";
+        }
+        else
+        {
+            besked = "Ordination kunne ikke gives";
+        }
+        db.SaveChanges();
+        return besked;
     }
 
     /// <summary>

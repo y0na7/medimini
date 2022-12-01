@@ -25,7 +25,7 @@ public class PN : Ordination {
 
     public override double doegnDosis() {
 
-        double tal = (dates.Count()* antalEnheder)/ (slutDen - startDen).Days;
+        double tal = (dates.Count() * antalEnheder) / (slutDen - startDen).Days;
         return tal;
     }
 
