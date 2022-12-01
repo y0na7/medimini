@@ -188,6 +188,7 @@ public class DataService
         {
              dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
         }
+        db.SaveChanges();
         return dosis;
 	}
     
