@@ -162,9 +162,14 @@ public class DataService
 
     public string AnvendOrdination(int id, Dato dato) {
         Ordination ordination = db.Ordinationer.Find(id)!;
+        PN pn = db.PNs.Find(id)!;
+        pn.givDosis(dato);
         string besked = "";
-        if (dato.dato > ordination.startDen && dato.dato < ordination.slutDen) 
+        if (dato.dato >= ordination.startDen && dato.dato <= ordination.slutDen) 
         {
+            pn.doegnDosis();
+            pn.samletDosis();
+            pn.getAntalGangeGivet();
             besked = "Ordination er givet";
         }
         else

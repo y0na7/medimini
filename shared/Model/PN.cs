@@ -18,17 +18,23 @@ public class PN : Ordination {
     /// </summary>
     public bool givDosis(Dato givesDen) {
         dates.Add(givesDen);
-        if (slutDen < givesDen.dato || startDen > givesDen.dato)
-            return false;
-        else return true;
+        if (givesDen.dato >= startDen && givesDen.dato <= slutDen)
+            return true;
+        else return false;
     }
 
-    public override double doegnDosis() {
+   /* public override double doegnDosis() {
 
         double tal = (dates.Count() * antalEnheder) / (slutDen - startDen).Days;
         return tal;
-    }
+    }*/
 
+    public override double doegnDosis()
+    {
+
+        double tal = (getAntalGangeGivet() * antalEnheder) / antalDage();
+        return tal;
+    }
 
     public override double samletDosis() {
         return dates.Count() * antalEnheder;
