@@ -133,6 +133,12 @@ public class DataService
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato) {
         Patient patient = db.Patienter.Find(patientId)!;
         Laegemiddel laegemiddel = db.Laegemiddler.Find(laegemiddelId)!;
+
+        if (patient == null || laegemiddel == null)
+        {
+            throw new ArgumentNullException();
+        }
+
         PN pn = new PN(startDato,slutDato,antal,laegemiddel);
         patient.ordinationer.Add(pn);
         db.SaveChanges();
@@ -163,13 +169,13 @@ public class DataService
     public string AnvendOrdination(int id, Dato dato) {
         Ordination ordination = db.Ordinationer.Find(id)!;
         PN pn = db.PNs.Find(id)!;
-        pn.givDosis(dato);
         string besked = "";
         if (dato.dato >= ordination.startDen && dato.dato <= ordination.slutDen) 
         {
-            pn.doegnDosis();
-            pn.samletDosis();
+            pn.givDosis(dato);
             pn.getAntalGangeGivet();
+            pn.samletDosis();
+            pn.doegnDosis();
             besked = "Ordination er givet";
         }
         else
@@ -191,7 +197,7 @@ public class DataService
         Patient patient = db.Patienter.Find(patientId)!;
         Laegemiddel laegemiddel = db.Laegemiddler.Find(laegemiddelId)!;
         double dosis = 0;
-        if (patient.vaegt < 25)
+        if (patient.vaegt < 25 && patient.vaegt > 0)
         {
              dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnLet;
         }
@@ -202,6 +208,10 @@ public class DataService
         else if (patient.vaegt > 120)
         {
              dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
+        }
+        else if (patient.vaegt < 0)
+        {
+            throw new ArgumentNullException();
         }
         db.SaveChanges();
         return dosis;
